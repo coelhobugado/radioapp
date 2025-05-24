@@ -724,8 +724,16 @@ audioPlayer.onerror = (e) => {
             }
 
             try {
-                const countResponse = await fetchData('/stations/search', { ...filters, limit: 100000 });
-                totalStations = countResponse.length;
+                // Create countFilters from the global filters object
+                const countFilters = {
+                    name: filters.name,
+                    country: filters.country,
+                    language: filters.language,
+                    tagList: filters.tagList,
+                    hidebroken: filters.hidebroken !== undefined ? filters.hidebroken : true
+                };
+                const countResponse = await fetchData('/stations/search/count', countFilters);
+                totalStations = parseInt(countResponse.value, 10);
                 const stationsData = await fetchData('/stations/search', filters);
                 stations = stationsData;
                 currentStationIndex = 0;
