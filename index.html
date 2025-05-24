@@ -3,529 +3,720 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rádio Online</title>
+    <title>Rádio Online Avançada</title>
+    <!-- Favicon com Emoji (pode substituir por um .ico ou .png real) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📻</text></svg>">
+
+    <!-- Importa a fonte Inter do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Script para Lucide Icons (se você for usar) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         :root {
-    --primary-color: #4f46e5;
-    --primary-hover: #6366f1;
-    --primary-light: #1e1b4b;
-    --secondary-color: #e2e8f0;
-    --accent-color: #f43f5e;
-    --text-color: #e2e8f0;
-    --text-light: #94a3b8;
-    --light-bg: #0f172a;
-    --card-bg: #1e293b;
-    --border-color: #334155;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35);
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-full: 9999px;
-    --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-}
+            --primary-color: #4f46e5; /* Indigo 600 */
+            --primary-hover: #6366f1; /* Indigo 500 */
+            --primary-light: #1e1b4b; /* Indigo 900 */
+            --secondary-color: #e2e8f0; /* Slate 200 */
+            --accent-color: #f43f5e; /* Rose 500 */
+            --text-color: #e2e8f0; /* Slate 200 */
+            --text-light: #94a3b8; /* Slate 400 */
+            --light-bg: #0f172a; /* Slate 900 */
+            --card-bg: #1e293b; /* Slate 800 */
+            --border-color: #334155; /* Slate 700 */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+            --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
 
-body {
-    background-color: var(--light-bg);
-    color: var(--text-color);
-    line-height: 1.6;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-header {
-    background-color: #1e1b4b;
-    background-image: linear-gradient(135deg, #1e1b4b, #4338ca);
-    color: white;
-    padding: 1.25rem 2rem;
-    box-shadow: var(--shadow-md);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
+        header {
+            background-color: #1e1b4b;
+            background-image: linear-gradient(135deg, #1e1b4b, #4338ca);
+            color: white;
+            padding: 1.25rem 2rem;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-.container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1.5rem;
-}
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
 
-.search-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-    background-color: var(--card-bg);
-    padding: 1.25rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-}
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background-color: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
 
-.search-box {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    position: relative;
-}
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+        }
 
-input, select, button {
-    padding: 0.875rem 1.25rem;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
-    font-size: 1rem;
-    transition: all var(--transition);
-    outline: none;
-}
+        input, select, button {
+            padding: 0.875rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            transition: all var(--transition);
+            outline: none; /* Removido para acessibilidade, será adicionado um foco customizado */
+        }
 
-input {
-    flex: 1;
-    min-width: 200px;
-    box-shadow: var(--shadow-sm);
-    background-color: #0f172a;
-    color: var(--text-color);
-}
+        /* Foco customizado para acessibilidade */
+        input:focus, select:focus, button:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            outline: none; /* Garante que o outline padrão do navegador não apareça */
+        }
 
-input:focus, select:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-}
+        input {
+            flex: 1;
+            min-width: 200px;
+            box-shadow: var(--shadow-sm);
+            background-color: #0f172a;
+            color: var(--text-color);
+        }
 
-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color var(--transition), transform var(--transition);
-    white-space: nowrap;
-    font-weight: 500;
-    box-shadow: var(--shadow-sm);
-}
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color var(--transition), transform var(--transition);
+            white-space: nowrap;
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+            display: inline-flex; /* Para alinhar ícones e texto */
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
 
-button:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
 
-button:active {
-    transform: translateY(0);
-}
+        button:active {
+            transform: translateY(0);
+        }
 
-.filter-container {
-    display: flex;
-    gap: 1.25rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    background-color: var(--card-bg);
-    padding: 1.25rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-}
+        .filter-container {
+            display: flex;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            background-color: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
 
-.filter-group {
-    flex: 1;
-    min-width: 200px;
-}
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
 
-.filter-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--text-light);
-    font-size: 0.875rem;
-}
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
 
-select {
-    width: 100%;
-    background-color: #0f172a;
-    color: var(--text-color);
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1.25rem;
-    padding-right: 2.5rem;
-}
+        select {
+            width: 100%;
+            background-color: #0f172a;
+            color: var(--text-color);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.25rem;
+            padding-right: 2.5rem;
+        }
 
-.radio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
+        /* Estilo para multi-seleção de tags */
+        select[multiple] {
+            padding-right: 1.25rem; /* Remove a seta padrão */
+            min-height: 100px; /* Altura mínima para mostrar mais opções */
+            resize: vertical; /* Permite redimensionar verticalmente */
+        }
 
-.radio-card {
-    background-color: var(--card-bg);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    transition: transform var(--transition), box-shadow var(--transition);
-    position: relative;
-    border: 1px solid var(--border-color);
-}
+        select[multiple] option {
+            padding: 0.5rem 0.75rem;
+        }
+        select[multiple] option:checked {
+            background-color: var(--primary-color);
+            color: white;
+        }
 
-.radio-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-}
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
 
-.radio-image {
-    height: 180px;
-    background-color: #0f172a;
-    background-image: linear-gradient(45deg, #0f172a, #1e293b);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 3rem;
-    overflow: hidden;
-    position: relative;
-}
+        .radio-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
 
-.radio-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--transition);
-}
+        .radio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
 
-.radio-card:hover .radio-image img {
-    transform: scale(1.05);
-}
+        /* Destaque para a estação atualmente tocando */
+        .radio-card.playing {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4); /* Anel de destaque */
+            transform: translateY(-3px); /* Leve levantamento */
+        }
 
-.radio-info {
-    padding: 1.25rem;
-}
+        .radio-image {
+            height: 180px;
+            background-color: #0f172a;
+            background-image: linear-gradient(45deg, #0f172a, #1e293b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            overflow: hidden;
+            position: relative;
+        }
 
-.radio-name {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--secondary-color);
-}
+        .radio-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition);
+        }
 
-.radio-details {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-}
+        .radio-card:hover .radio-image img {
+            transform: scale(1.05);
+        }
 
-.radio-details span {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+        .radio-info {
+            padding: 1.25rem;
+            position: relative; /* Para posicionar o botão de favorito */
+        }
 
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-}
+        .radio-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--secondary-color);
+        }
 
-.tag {
-    background-color: var(--primary-light);
-    color: #a5b4fc;
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 500;
-}
+        .radio-details {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
 
-.play-button {
-    position: absolute;
-    bottom: 1.25rem;
-    right: 1.25rem;
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius-full);
-    background-color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition);
-}
+        .radio-details span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-.play-button:hover {
-    background-color: var(--primary-hover);
-    transform: scale(1.1);
-}
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
 
-.play-button svg {
-    width: 24px;
-    height: 24px;
-    fill: white;
-}
+        .tag {
+            background-color: var(--primary-light);
+            color: #a5b4fc; /* Indigo 200 */
+            padding: 0.25rem 0.625rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
 
-.player-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #0f172a;
-    color: white;
-    padding: 1rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 100;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-}
+        /* Botão de play na card */
+        .play-button {
+            position: absolute;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition);
+            /* Efeito de aparição no hover da card */
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none; /* Desabilita o clique quando invisível */
+        }
 
-.player-container.active {
-    transform: translateY(0);
-}
+        .radio-card:hover .play-button {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
 
-.now-playing {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-}
+        .play-button:hover {
+            background-color: var(--primary-hover);
+            transform: scale(1.1);
+        }
 
-.station-logo {
-    width: 60px;
-    height: 60px;
-    background-color: var(--primary-color);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
+        .play-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            stroke: white;
+        }
 
-.station-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        /* Botão de favorito na card */
+        .favorite {
+            position: absolute;
+            top: 1.25rem; /* Posição dentro da radio-info */
+            right: 1.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: color var(--transition), transform var(--transition);
+        }
 
-.station-info {
-    flex: 1;
-}
+        .favorite:hover {
+            transform: scale(1.2);
+            color: var(--accent-color); /* Hover para coração vazio */
+        }
 
-.station-info h3 {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
+        .favorite.active {
+            color: var(--accent-color); /* Cor para coração preenchido */
+        }
 
-.station-info p {
-    color: #94a3b8;
-    font-size: 0.875rem;
-}
+        .favorite svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor; /* Preenche com a cor do botão */
+            stroke: currentColor; /* Contorna com a cor do botão */
+        }
 
-.player-controls {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
+        .favorite .icon-heart-empty { display: inline-block; }
+        .favorite .icon-heart-filled { display: none; }
+        .favorite.active .icon-heart-empty { display: none; }
+        .favorite.active .icon-heart-filled { display: inline-block; }
 
-.control-button {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition);
-}
 
-.control-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
-}
+        .player-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0f172a;
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
 
-.control-button.play-pause {
-    width: 48px;
-    height: 48px;
-    background-color: var(--primary-color);
-}
+        .player-container.active {
+            transform: translateY(0);
+        }
 
-.control-button.play-pause:hover {
-    background-color: var(--primary-hover);
-}
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-shrink: 0; /* Evita que encolha muito */
+            min-width: 150px;
+        }
 
-.volume-control {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-full);
-}
+        .station-logo {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
 
-.volume-slider {
-    width: 100px;
-    appearance: none;
-    height: 4px;
-    border-radius: var(--radius-full);
-    background-color: rgba(255, 255, 255, 0.2);
-    outline: none;
-}
+        .station-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-.volume-slider::-webkit-slider-thumb {
-    appearance: none;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: white;
-    cursor: pointer;
-}
+        .station-logo svg {
+            width: 32px; /* Tamanho do ícone dentro do logo */
+            height: 32px;
+            color: white;
+        }
 
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    flex-direction: column;
-    gap: 1rem;
-}
+        .station-info {
+            flex: 1;
+            min-width: 0; /* Permite que o texto encurte */
+        }
 
-.spinner {
-    width: 60px; /* Aumentar tamanho */
-    height: 60px; /* Aumentar tamanho */
-    border-radius: 50%;
-    background-color: var(--primary-color); /* Cor primária como fundo */
-    animation: pulse 1.5s ease-in-out infinite; /* Nova animação */
-    /* border e border-top-color removidos */
-}
+        .station-info h3 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+        .station-info p {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-@keyframes pulse { /* Nova animação */
-    0% {
-        transform: scale(0.8);
-        opacity: 0.7;
-    }
-    50% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0.8);
-        opacity: 0.7;
-    }
-}
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-grow: 1; /* Permite que os controles cresçam */
+            justify-content: center; /* Centraliza os controles */
+        }
 
-.loading p {
-    color: var(--text-light);
-    font-weight: 500;
-}
+        .control-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            padding: 0;
+        }
 
-.no-results {
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-light);
-    background-color: var(--card-bg);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-}
+        .control-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
 
-.no-results svg {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 1rem;
-    color: var(--text-light);
-    opacity: 0.5;
-}
+        .control-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            stroke: white;
+        }
 
-.no-results h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-}
+        .control-button.play-pause {
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary-color);
+        }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 2.5rem;
-    gap: 0.5rem;
-}
+        .control-button.play-pause:hover {
+            background-color: var(--primary-hover);
+        }
 
-.pagination button {
-    padding: 0.625rem 1rem;
-    min-width: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-}
+        /* Controle de play/pause com SVGs */
+        .play-pause .icon-play { display: inline-block; }
+        .play-pause .icon-pause { display: none; }
+        .play-pause.playing .icon-play { display: none; }
+        .play-pause.playing .icon-pause { display: inline-block; }
 
-.pagination button.active {
-    background-color: #0f172a;
-    color: white;
-}
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            flex-shrink: 0; /* Evita que encolha muito */
+        }
 
-.pagination button:disabled {
-    background-color: #334155;
-    color: #64748b;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
+        .volume-control svg {
+            width: 20px; /* Ajuste o tamanho do ícone de volume */
+            height: 20px;
+            fill: white;
+            stroke: white;
+        }
 
-@media (max-width: 768px) {
-    .search-container, .filter-container {
-        flex-direction: column;
-        padding: 1rem;
-    }
-    
-    .radio-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-    
-    .player-container {
-        flex-direction: column;
-        gap: 1.25rem;
-        padding: 1.25rem 1rem;
-    }
-    
-    .station-info {
-        text-align: center;
-        margin-bottom: 0.5rem;
-    }
-    
-    .now-playing {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .player-controls {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .volume-control {
-        margin-top: 0.5rem;
-    }
-}
+        .volume-slider {
+            width: 100px;
+            appearance: none;
+            height: 4px;
+            border-radius: var(--radius-full);
+            background-color: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Mensagens de estado */
+        .loading, .no-results {
+            opacity: 0;
+            transition: opacity var(--transition);
+            pointer-events: none; /* Impede interação quando invisível */
+            display: flex; /* Mantém flex para transição de opacidade */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 300px; /* Altura padrão para ocupar espaço */
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .loading.active, .no-results.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(79, 70, 229, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .no-results svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            opacity: 0.5;
+        }
+
+        .no-results h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Notificação de erro (toast) */
+        .error-toast {
+            position: fixed;
+            bottom: 120px; /* Acima do player */
+            left: 50%;
+            transform: translateX(-50%) translateY(20px); /* Inicialmente um pouco para baixo e transparente */
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .error-toast.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .error-toast svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            stroke: white;
+        }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2.5rem;
+            gap: 0.5rem;
+            flex-wrap: wrap; /* Para quebrar a linha em telas pequenas */
+        }
+
+        .pagination button {
+            padding: 0.625rem 1rem;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .pagination button.active {
+            background-color: #0f172a; /* Cor de fundo mais escura para o botão ativo */
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination button:disabled {
+            background-color: #334155;
+            color: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .search-container, .filter-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            .search-box {
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .search-box input, .search-box button {
+                width: 100%;
+            }
+            .search-container > div:last-child {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .radio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .player-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+                align-items: flex-start;
+            }
+
+            .now-playing {
+                width: 100%;
+                justify-content: center;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+
+            .station-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .player-controls {
+                width: 100%;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .volume-control {
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+                padding: 0.5rem;
+            }
+            .volume-slider {
+                flex: 1; /* Ocupa o espaço restante */
+            }
+            .error-toast {
+                width: calc(100% - 2rem);
+                bottom: 100px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -536,83 +727,112 @@ select {
     </header>
 
     <main class="container">
-        <div id="general-error-message" style="display: none; padding: 1rem; margin-bottom: 1rem; background-color: var(--accent-color); color: white; border-radius: var(--radius-md); text-align: center;"></div>
         <div class="search-container">
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Pesquisar estações...">
-                <button id="search-button">Pesquisar</button>
+                <input type="text" id="search-input" placeholder="Pesquisar estações..." aria-label="Campo de pesquisa de estações">
+                <button id="search-button" aria-label="Pesquisar estações">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    Pesquisar
+                </button>
             </div>
             <div>
-                <button id="favorites-button">Favoritos</button>
+                <button id="favorites-button" aria-label="Alternar para estações favoritas">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    Favoritos
+                </button>
+                <button id="clear-filters-button" aria-label="Limpar todos os filtros de pesquisa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-filter-x"><path d="M2.5 2H22l-8 10V21"/><path d="m17 13 5 5m0-5-5 5"/></svg>
+                    Limpar Filtros
+                </button>
             </div>
         </div>
 
-    <div class="filter-container">
-    <div class="filter-group">
-        <label for="country-filter">País:</label>
-        <select id="country-filter">
-            <option value="">Todos os Países</option>
-        </select>
-    </div>
-    <div class="filter-group">
-        <label for="language-filter">Idioma:</label>
-        <select id="language-filter">
-            <option value="">Todos os Idiomas</option>
-        </select>
-    </div>
-    <div class="filter-group">
-        <label for="tag-filter">Gênero:</label>
-        <select id="tag-filter">
-            <option value="">Todos os Gêneros</option>
-        </select>
-    </div>
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="country-filter">País:</label>
+                <select id="country-filter" aria-label="Filtrar estações por país">
+                    <option value="">Todos os Países</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="language-filter">Idioma:</label>
+                <select id="language-filter" aria-label="Filtrar estações por idioma">
+                    <option value="">Todos os Idiomas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="tag-filter">Gênero:</label>
+                <select id="tag-filter" multiple aria-label="Filtrar estações por gênero (múltipla seleção)">
+                    <option value="">Todos os Gêneros</option>
+                </select>
+            </div>
 
             <div class="filter-group">
                 <label for="sort-options">Ordenar por:</label>
-                <select id="sort-options">
+                <select id="sort-options" aria-label="Ordenar resultados por">
                     <option value="name">Nome (A-Z)</option>
                     <option value="votes">Mais Votadas</option>
                     <option value="clicks">Mais Populares</option>
                     <option value="bitrate">Melhor Qualidade</option>
                 </select>
             </div>
+        </div>
 
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <p>Buscando estações, por favor aguarde...</p>
+            <p>Carregando estações...</p>
         </div>
 
         <div id="radio-grid" class="radio-grid"></div>
 
         <div id="pagination" class="pagination"></div>
-        </main>
+    </main>
 
     <div id="player" class="player-container">
         <div class="now-playing">
             <div class="station-logo">
-                <i class="radio-icon">📻</i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-radio"><circle cx="12" cy="12" r="2"/><path d="M4.93 19.07A10 10 0 0 1 12 22v-2A8 8 0 0 0 6.34 17.66"/><path d="M19.07 4.93A10 10 0 0 1 12 2v2A8 8 0 0 0 17.66 6.34"/><path d="M4.93 4.93A16 16 0 0 1 12 2v2A14 14 0 0 0 6.34 6.34"/><path d="M19.07 19.07A16 16 0 0 0 12 22v-2A14 14 0 0 1 17.66 17.66"/></svg>
             </div>
             <div class="station-info">
-                <h3 id="current-station">Nome da Estação</h3>
-                <p id="current-info">País - Gênero</p>
+                <h3 id="current-station">Nenhuma estação tocando</h3>
+                <p id="current-info">Aguardando seleção...</p>
             </div>
         </div>
         <div class="player-controls">
-            <button class="control-button" id="stop-button">⏹️</button>
-            <button class="control-button play-pause" id="play-pause-button">▶️</button>
+            <button class="control-button" id="stop-button" aria-label="Parar reprodução">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+            </button>
+            <button class="control-button play-pause" id="play-pause-button" aria-label="Reproduzir ou pausar">
+                <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg class="icon-pause" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
             <div class="volume-control">
-                <span>🔊</span>
-                <input type="range" id="volume" min="0" max="1" step="0.1" value="0.7">
+                <span id="volume-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </span>
+                <input type="range" id="volume" min="0" max="1" step="0.1" value="0.7" aria-label="Controle de volume">
             </div>
         </div>
         <audio id="audio-player"></audio>
     </div>
 
+    <div id="error-toast" class="error-toast">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <span id="error-message-text"></span>
+    </div>
+
     <script>
+        // --- CONSTANTES ---
         const API_BASE_URL = 'https://de1.api.radio-browser.info/json';
+        const USER_AGENT = 'RadioOnlineWebApp/1.0 (seu_email@example.com)'; // Substitua pelo seu email/identificador
+        const ITEMS_PER_PAGE = 20;
+        const DEBOUNCE_DELAY = 500; // ms para debounce da pesquisa
+
+        // --- REFERÊNCIAS DO DOM ---
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
         const favoritesButton = document.getElementById('favorites-button');
+        const clearFiltersButton = document.getElementById('clear-filters-button');
         const countryFilter = document.getElementById('country-filter');
         const languageFilter = document.getElementById('language-filter');
         const tagFilter = document.getElementById('tag-filter');
@@ -626,32 +846,124 @@ select {
         const currentInfo = document.getElementById('current-info');
         const stopButton = document.getElementById('stop-button');
         const volumeControl = document.getElementById('volume');
+        const volumeIconContainer = document.getElementById('volume-icon-container');
         const playPauseButton = document.getElementById('play-pause-button');
-        const playerErrorMessage = document.getElementById('player-error-message');
-        const tryNextStationButton = document.getElementById('try-next-station-button');
+        const errorToast = document.getElementById('error-toast');
+        const errorToastText = document.getElementById('error-message-text');
 
-
+        // --- ESTADO DA APLICAÇÃO ---
         let currentPage = 1;
-        let itemsPerPage = 20;
         let totalStations = 0;
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let showingFavorites = false;
-        let stations = []; // Array global para armazenar as estações
-        let currentStationIndex = 0; //Índice da estação atual
+        let stations = []; // Array global para armazenar as estações da página atual
+        let currentStationIndex = -1; // Índice da estação atual na array 'stations'
+        let currentPlayingCard = null; // Referência à radio-card atualmente tocando
 
         const filters = {
             name: '',
             country: '',
             language: '',
-            tagList: '', // Inicializado como vazio
+            tagList: '',
             order: 'name',
             reverse: false,
             offset: 0,
-            limit: itemsPerPage,
+            limit: ITEMS_PER_PAGE,
             hidebroken: true
         };
 
+        // --- FUNÇÕES UTILITÁRIAS ---
 
+        /**
+         * Adiciona um efeito de debounce a uma função.
+         * @param {function} func - A função a ser debounced.
+         * @param {number} delay - O tempo em milissegundos para esperar antes de chamar a função.
+         */
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), delay);
+            };
+        }
+
+        /**
+         * Exibe uma mensagem de erro temporária na interface.
+         * @param {string} message - A mensagem de erro a ser exibida.
+         */
+        function displayError(message) {
+            errorToastText.textContent = message;
+            errorToast.classList.add('active');
+            setTimeout(() => {
+                errorToast.classList.remove('active');
+            }, 5000); // Esconde após 5 segundos
+        }
+
+        /**
+         * Função específica para exibir erros de reprodução de áudio.
+         * @param {string} message - A mensagem de erro de reprodução.
+         */
+        function displayPlaybackError(message) {
+            displayError(`Erro de reprodução: ${message}`);
+        }
+
+        /**
+         * Altera a visibilidade do spinner de carregamento.
+         * @param {boolean} show - Verdadeiro para mostrar, falso para esconder.
+         */
+        function showLoading(show) {
+            if (show) {
+                loading.style.display = 'flex'; // Torna visível para que a transição de opacidade funcione
+                setTimeout(() => loading.classList.add('active'), 10);
+                radioGrid.innerHTML = ''; // Limpa a grid enquanto carrega
+                pagination.innerHTML = ''; // Limpa a paginação enquanto carrega
+            } else {
+                loading.classList.remove('active');
+                setTimeout(() => {
+                    loading.style.display = 'none'; // Esconde após a transição
+                }, 300); // Tempo da transição CSS
+            }
+        }
+
+        /**
+         * Exibe uma mensagem de "Nenhum resultado" na grid.
+         * @param {string} message - A mensagem a ser exibida.
+         */
+        function showNoResultsMessage(message) {
+            radioGrid.innerHTML = `
+                <div class="no-results active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-frown"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>
+                    <h3>${message}</h3>
+                </div>
+            `;
+            pagination.innerHTML = ''; // Nenhuma paginação se não há resultados
+        }
+
+        /**
+         * Atualiza o ícone de volume com base no valor.
+         * @param {number} volume - O valor do volume (0 a 1).
+         */
+        function updateVolumeIcon(volume) {
+            let iconSvg = '';
+            if (volume == 0) {
+                iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-x"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>`;
+            } else if (volume < 0.5) {
+                iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-1"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
+            } else {
+                iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
+            }
+            volumeIconContainer.innerHTML = iconSvg;
+        }
+
+        // --- LÓGICA DA API ---
+
+        /**
+         * Faz requisições à API RadioBrowser.
+         * @param {string} endpoint - O endpoint da API (ex: '/countries', '/stations/search').
+         * @param {object} params - Parâmetros da query.
+         * @returns {Promise<Array|object>} Os dados da resposta da API.
+         */
         async function fetchData(endpoint, params = {}) {
             try {
                 const url = new URL(`${API_BASE_URL}${endpoint}`);
@@ -661,50 +973,51 @@ select {
                     }
                 });
 
-                const response = await fetch(url, {
-                    headers: {
-                        'User-Agent': 'RadioOnlineWebApp/1.0'
-                    }
+                const response = await fetch(url.toString(), {
+                    headers: { 'User-Agent': USER_AGENT }
                 });
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    const message = `Erro na requisição da API (${response.status}): ${errorText}`;
-                    throw new Error(message);
+                    // MELHORIA: Incluindo a URL completa na mensagem de erro para depuração
+                    const errorMessage = `Erro na requisição da API (${response.status}) para URL: ${url.toString()}. Resposta: ${errorText || '(Sem resposta no corpo)'}`;
+                    console.error(errorMessage); // Loga a mensagem detalhada para o console
+                    throw new Error(errorMessage); // Lança a mensagem detalhada para ser exibida
                 }
 
                 return await response.json();
             } catch (error) {
-                // console.error('Erro ao buscar dados:', error); // Removido pois handleError fará o log.
-                handleError(error); 
+                console.error('Erro ao buscar dados:', error);
+                displayError(`Falha ao carregar dados: ${error.message}.`); // Agora error.message contém a URL e resposta
                 return [];
             }
         }
 
-        function handleError(error) {
-            console.error('Erro detectado:', error); // Mantém o log no console
-
-            const generalErrorMessage = document.getElementById('general-error-message');
-
-            if (generalErrorMessage) {
-                // Limitar o tamanho da mensagem para não quebrar o layout
-                const displayMessage = error.message.length > 150 ? error.message.substring(0, 147) + "..." : error.message;
-                generalErrorMessage.textContent = `Erro: ${displayMessage}`;
-                generalErrorMessage.style.display = 'block';
-
-                // Opcional: ocultar a mensagem após alguns segundos
-                setTimeout(() => {
-                    generalErrorMessage.style.display = 'none';
-                }, 7000); // Oculta após 7 segundos
-            } else {
-                // Fallback se o elemento não existir (embora não devesse acontecer)
-                // Este alert só será usado se o #general-error-message não for encontrado.
-                alert(`Erro: ${error.message}`);
+        /**
+         * Registra um clique na estação via API (para contagem de popularidade).
+         * @param {string} stationuuid - O UUID da estação.
+         */
+        async function trackStationClick(stationuuid) {
+            try {
+                // Endpoint para registrar um clique, apenas uma requisição HEAD ou GET leve
+                await fetch(`${API_BASE_URL}/url/${stationuuid}`, {
+                    method: 'HEAD', // Usar HEAD é mais eficiente para apenas registrar
+                    headers: { 'User-Agent': USER_AGENT }
+                });
+            } catch (error) {
+                console.warn('Erro ao registrar clique (pode ser problema de rede ou CORS):', error);
+                // Não exiba um erro crítico ao usuário, pois isso é secundário
             }
         }
 
+        // --- LÓGICA DE FILTROS ---
+
+        /**
+         * Carrega e preenche os filtros de país, idioma e gênero.
+         */
         async function loadFilters() {
             try {
+                // Melhoria: Usar Promise.all para carregar filtros em paralelo
                 const [countries, languages, tags] = await Promise.all([
                     fetchData('/countries'),
                     fetchData('/languages'),
@@ -713,19 +1026,36 @@ select {
 
                 populateSelect(countryFilter, countries, 'name');
                 populateSelect(languageFilter, languages, 'name');
-                populateSelect(tagFilter, tags.filter(tag => tag.name.trim() !== '' && tag.stationcount > 5).sort((a, b) => b.stationcount - a.stationcount).slice(0, 50), 'name');
-                //tagFilter.multiple = true;
+                // Filtra tags com poucas estações e ordena por contagem
+                populateSelect(tagFilter, tags.filter(tag => tag.name.trim() !== '' && tag.stationcount > 5)
+                                            .sort((a, b) => b.stationcount - a.stationcount)
+                                            .slice(0, 50), // Limita as 50 tags mais populares
+                            'name');
+                tagFilter.multiple = true; // Habilita multi-seleção para tags
 
             } catch (error) {
-                handleError(error);
+                // displayError já é chamado dentro de fetchData
+                console.error("Erro ao carregar filtros:", error);
             }
         }
 
+        /**
+         * Preenche um elemento <select> com dados de uma array.
+         * @param {HTMLSelectElement} selectElement - O elemento <select> a ser preenchido.
+         * @param {Array<object>} data - Os dados para preencher as opções.
+         * @param {string} valueProperty - A propriedade do objeto a ser usada como valor e texto da opção.
+         */
         function populateSelect(selectElement, data, valueProperty) {
             selectElement.innerHTML = '';
             const firstOption = document.createElement('option');
             firstOption.value = '';
-            firstOption.textContent = 'Todos';
+            // Ajusta o texto da primeira opção dinamicamente
+            let optionText = 'Todos';
+            if (selectElement.id === 'country-filter') optionText += ' os Países';
+            else if (selectElement.id === 'language-filter') optionText += ' os Idiomas';
+            else if (selectElement.id === 'tag-filter') optionText += ' os Gêneros';
+
+            firstOption.textContent = optionText;
             selectElement.appendChild(firstOption);
 
             data.forEach(item => {
@@ -736,10 +1066,52 @@ select {
             });
         }
 
+        /**
+         * Atualiza o objeto `filters` com os valores atuais dos campos de entrada.
+         */
+        function updateFilters() {
+            const selectedTags = Array.from(tagFilter.selectedOptions).map(option => option.value).join(',');
 
+            filters.name = searchInput.value;
+            filters.country = countryFilter.value;
+            filters.language = languageFilter.value;
+            filters.tagList = selectedTags;
+            filters.order = sortOptions.value;
+            filters.reverse = filters.order === 'votes' || filters.order === 'clicks' || filters.order === 'bitrate';
+            filters.offset = (currentPage - 1) * ITEMS_PER_PAGE;
+            filters.limit = ITEMS_PER_PAGE;
+            filters.hidebroken = true;
+        }
+
+        /**
+         * Limpa todos os filtros e a pesquisa, redefinindo o estado.
+         */
+        function clearAllFilters() {
+            searchInput.value = '';
+            countryFilter.value = '';
+            languageFilter.value = '';
+            // Desmarca todas as opções de tags se for multi-seleção
+            Array.from(tagFilter.options).forEach(option => option.selected = false);
+            tagFilter.value = ''; // Para garantir que a primeira opção seja selecionada se não for multi-seleção
+            sortOptions.value = 'name';
+
+            // Reseta o estado de favoritos
+            showingFavorites = false;
+            favoritesButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Favoritos`;
+            pagination.style.display = 'flex'; // Garante que a paginação apareça
+
+            currentPage = 1; // Reseta a página para a primeira
+            updateFilters();
+            searchStations();
+        }
+
+        // --- LÓGICA PRINCIPAL DE PESQUISA ---
+
+        /**
+         * Busca estações com base nos filtros atuais e as exibe.
+         */
         async function searchStations() {
             showLoading(true);
-            radioGrid.innerHTML = '';
 
             if (showingFavorites) {
                 displayFavorites();
@@ -747,314 +1119,406 @@ select {
             }
 
             try {
-                // Create countFilters from the global filters object
-                const countFilters = {
-                    name: filters.name,
-                    country: filters.country,
-                    language: filters.language,
-                    tagList: filters.tagList,
-                    hidebroken: filters.hidebroken !== undefined ? filters.hidebroken : true
-                };
-                const countResponse = await fetchData('/stations/search/count', countFilters);
-                totalStations = parseInt(countResponse.value, 10);
-                const stationsData = await fetchData('/stations/search', filters);
-                stations = stationsData; // This populates the global 'stations' array
-                // currentStationIndex = 0; // This is already here from a previous change, as expected by the task.
+                // CORREÇÃO DE BUG: Obter a contagem total de estações usando o endpoint /stations/search
+                // com um limite alto, como no seu código original.
+                const countFiltersForTotal = { ...filters };
+                delete countFiltersForTotal.offset; // Garante que a contagem seja do total, ignorando paginação
+                countFiltersForTotal.limit = 100000; // Um limite alto para tentar pegar todas as estações filtradas para a contagem
+                
+                const allMatchingStationsForCount = await fetchData('/stations/search', countFiltersForTotal);
+                totalStations = allMatchingStationsForCount.length;
 
-                if (stations.length === 0) {
-                    showNoResultsMessage('Nenhuma estação encontrada', 'Tente palavras-chave diferentes ou ajuste os filtros de país, idioma ou gênero.');
-                } else {
-                    displayStations(stations);
-                    updatePagination();
+                // Se não houver estações, exibir mensagem e parar
+                if (totalStations === 0) {
+                    showNoResultsMessage('Nenhuma estação encontrada. Tente ajustar seus filtros de pesquisa.');
+                    showLoading(false);
+                    return;
                 }
+
+                // Obter as estações da página atual com os filtros de paginação
+                const stationsData = await fetchData('/stations/search', filters);
+                stations = stationsData; // Armazena as estações carregadas globalmente
+                currentStationIndex = -1; // Resetar o índice da estação atual ao carregar nova lista
+
+                displayStations(stations);
+                updatePagination();
+
             } catch (error) {
-                showNoResultsMessage('Erro ao buscar estações', 'Houve um problema ao carregar as estações. Por favor, tente novamente mais tarde ou recarregue a página.');
+                // displayError já é chamado dentro de fetchData para erros de API
+                showNoResultsMessage('Ocorreu um erro ao buscar estações. Por favor, tente novamente mais tarde.');
             } finally {
                 showLoading(false);
             }
         }
 
-        function showNoResultsMessage(title, suggestion) {
-            radioGrid.innerHTML = `
-                <div class="no-results">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search" style="color: var(--text-light); margin-bottom: 1rem; opacity: 0.7;">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <h3>${title}</h3>
-                    <p style="color: var(--text-light);">${suggestion}</p>
-                </div>
-            `;
-        }
-
-
-        function displayStations(stations) {
+        /**
+         * Exibe as estações na grid.
+         * @param {Array<object>} stationsToDisplay - A array de estações a serem exibidas.
+         */
+        function displayStations(stationsToDisplay) {
             radioGrid.innerHTML = '';
-            stations.forEach(station => {
-                const card = createStationCard(station);
-                radioGrid.appendChild(card);
-            });
-        }
-
-
-        function displayFavorites() {
-            radioGrid.innerHTML = '';
-            showLoading(true);
-
-            if (favorites.length === 0) {
-                showNoResultsMessage('Você ainda não tem estações favoritas', 'Clique no ícone de coração ❤️ em uma estação para adicioná-la aqui!');
-                showLoading(false);
+            if (stationsToDisplay.length === 0) {
+                // Isso pode acontecer se houver um totalStations > 0, mas a página específica estiver vazia
+                // (caso incomum, mas possível com bugs na API ou filters complexos)
+                showNoResultsMessage('Nenhuma estação encontrada para a página atual.');
                 return;
             }
 
-            fetchFavoriteStations();
-        }
+            stationsToDisplay.forEach(station => {
+                const card = createStationCard(station);
+                radioGrid.appendChild(card);
+            });
 
-
-        async function fetchFavoriteStations() {
-            currentStationIndex = 0; // Resetar o índice
-            stations = []; // Limpar o array de estações global
-            try {
-                const favoriteStationsData = await fetchData('/stations/byuuid', { uuids: favorites.join(',') });
-                stations = favoriteStationsData; // ATRIBUIR AO ARRAY GLOBAL 'stations'
-                displayStations(stations); 
-            } catch (error) {
-                showNoResultsMessage('Erro ao buscar seus favoritos', 'Houve um problema ao carregar suas estações favoritas. Por favor, tente recarregar a página.');
-                stations = []; // Limpar em caso de erro também
-            } finally {
-                showLoading(false);
+            // Re-destaca a estação atualmente tocando, se houver
+            if (audioPlayer.src && currentPlayingCard) {
+                // Remove o destaque da card anterior, se ainda estiver na DOM
+                const prevPlayingCard = document.querySelector(`.radio-card.playing`);
+                if(prevPlayingCard) {
+                    prevPlayingCard.classList.remove('playing');
+                }
+                // Adiciona destaque à nova card se ela existir na DOM atual
+                const newPlayingCard = document.querySelector(`.radio-card[data-uuid="${currentPlayingCard.dataset.uuid}"]`);
+                if (newPlayingCard) {
+                    newPlayingCard.classList.add('playing');
+                    currentPlayingCard = newPlayingCard; // Atualiza a referência, caso a card tenha sido recriada
+                } else {
+                    currentPlayingCard = null; // A estação em reprodução não está mais na tela
+                }
             }
         }
 
-
+        /**
+         * Cria um card HTML para uma estação de rádio.
+         * @param {object} station - Os dados da estação.
+         * @returns {HTMLElement} O elemento HTML do card.
+         */
         function createStationCard(station) {
             const card = document.createElement('div');
             card.className = 'radio-card';
+            card.dataset.uuid = station.stationuuid; // Adiciona o UUID ao dataset do card para fácil referência
 
             const isFavorite = favorites.includes(station.stationuuid);
             const favoriteClass = isFavorite ? 'favorite active' : 'favorite';
-            const favoriteIcon = isFavorite ? '❤️' : '🤍';
 
-            const tags = station.tags ? station.tags.split(',').slice(0, 3).map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
+            // Limita a 3 tags e filtra tags vazias
+            const tags = station.tags ? station.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '').slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('') : '';
 
             card.innerHTML = `
                 <div class="radio-image">
-                    ${station.favicon ? `<img src="${station.favicon}" alt="${station.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100/1e293b/e2e8f0?text=Radio';">` : '📻'}
+                    ${station.favicon ? `<img src="${station.favicon}" alt="Logo da ${station.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/180x180/0f172a/e2e8f0?text=Rádio';">` : `<img src="https://via.placeholder.com/180x180/0f172a/e2e8f0?text=Rádio" alt="Logo padrão de rádio">`}
                 </div>
                 <div class="radio-info">
-                    <h3 class="radio-name">${station.name}</h3>
+                    <h3 class="radio-name" title="${station.name}">${station.name}</h3>
                     <div class="radio-details">
-                        <span>${station.country || 'País Desconhecido'}</span>
-                        <span>${station.language || 'Idioma Desconhecido'}</span>
+                        <span>País: ${station.country || 'Desconhecido'}</span>
+                        <span>Idioma: ${station.language || 'Desconhecido'}</span>
                         <div class="tags">${tags}</div>
                     </div>
-                    <button class="${favoriteClass}" data-uuid="${station.stationuuid}">${favoriteIcon}</button>
+                    <button class="${favoriteClass}" data-uuid="${station.stationuuid}" aria-label="${isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">
+                        <svg class="icon-heart-empty" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        <svg class="icon-heart-filled" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    </button>
                 </div>
-                <div class="play-button" data-url="${station.url_resolved || station.url}" data-name="${station.name}" data-info="${station.country} - ${station.tags?.split(',')[0] || 'Sem gênero'}" data-stationuuid="${station.stationuuid}">▶️</div>
+                <div class="play-button"
+                     data-url="${station.url_resolved || station.url}"
+                     data-name="${station.name}"
+                     data-info="${station.country || 'País Desconhecido'} - ${station.tags?.split(',')[0]?.trim() || 'Sem gênero'}"
+                     data-uuid="${station.stationuuid}"
+                     aria-label="Reproduzir estação ${station.name}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
             `;
 
             const playButton = card.querySelector('.play-button');
             playButton.addEventListener('click', () => {
-                playStation(playButton.dataset.url, playButton.dataset.name, playButton.dataset.info, playButton.dataset.stationuuid);
+                const stationData = {
+                    url: playButton.dataset.url,
+                    name: playButton.dataset.name,
+                    info: playButton.dataset.info,
+                    uuid: playButton.dataset.uuid
+                };
+                playStation(stationData);
             });
 
             const favoriteButton = card.querySelector('.favorite');
             favoriteButton.addEventListener('click', (e) => {
-                e.stopPropagation();
+                e.stopPropagation(); // Evita que o clique se propague para o card inteiro (se tiver um evento no card)
                 toggleFavorite(station.stationuuid, favoriteButton);
             });
 
             return card;
         }
 
+        // --- LÓGICA DE FAVORITOS ---
 
-        function playStation(url, name, info, stationuuid) {
-    playerErrorMessage.style.display = 'none';
-    tryNextStationButton.style.display = 'none';
-
-    audioPlayer.src = url;
-    audioPlayer.volume = volumeControl.value;
-    audioPlayer.onended = playNextStation; // For sequential play when a stream ends naturally
-
-    audioPlayer.play()
-        .then(() => {
-            currentStation.textContent = name;
-            currentInfo.textContent = info;
-            player.classList.add('active');
-            playPauseButton.textContent = '⏸️'; // Playback started successfully
-            trackStationClick(stationuuid);
-            // Ensure error UI is hidden, might be redundant if onplaying fires reliably but good for safety
-            playerErrorMessage.style.display = 'none';
-            tryNextStationButton.style.display = 'none';
-        })
-        .catch(error => {
-            // This catch handles initial loading/setup errors before playback attempts.
-            console.error(`Error attempting to play ${name} (${stationuuid}):`, error);
-            // Manually trigger the visual error handling as if audioPlayer.onerror fired.
-            const stationNameForError = name || "A estação";
-            playerErrorMessage.textContent = `Erro ao carregar "${stationNameForError}".`;
-            playerErrorMessage.style.display = 'block';
-            tryNextStationButton.style.display = 'block';
-            playPauseButton.textContent = '▶️'; // Set to play as it failed to start
-        });
-}
-
-        playPauseButton.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playPauseButton.textContent = '⏸️';
-            } else {
-                audioPlayer.pause();
-                playPauseButton.textContent = '▶️';
-            }
-        });
-
-        async function trackStationClick(stationuuid) {
-        if (!stationuuid) {
-            console.error('stationuuid não fornecido para trackStationClick');
-            return;
-        }
-        try {
-            await fetch(`${API_BASE_URL}/url/${stationuuid}`, {
-                method: 'GET', 
-                headers: {
-                    'User-Agent': 'RadioOnlineWebApp/1.1 (Tracking)'
-                }
-            });
-        } catch (error) {
-            console.error('Erro ao registrar clique:', error);
-        }
-    }
-
-
+        /**
+         * Alterna o estado de favorito de uma estação.
+         * @param {string} uuid - O UUID da estação.
+         * @param {HTMLElement} button - O botão de favorito clicado.
+         */
         function toggleFavorite(uuid, button) {
             const index = favorites.indexOf(uuid);
 
             if (index === -1) {
                 favorites.push(uuid);
-                button.textContent = '❤️';
                 button.classList.add('active');
+                button.setAttribute('aria-label', 'Remover dos favoritos');
             } else {
                 favorites.splice(index, 1);
-                button.textContent = '🤍';
                 button.classList.remove('active');
+                button.setAttribute('aria-label', 'Adicionar aos favoritos');
 
                 if (showingFavorites) {
+                    // Remove o card da visualização de favoritos se ele for desfavoritado
                     const card = button.closest('.radio-card');
                     card.remove();
-
+                    // Se a lista de favoritos ficar vazia, mostre a mensagem
                     if (favorites.length === 0) {
-                        displayFavorites();
+                        displayFavorites(); // Recarrega a mensagem de "nenhum favorito"
                     }
                 }
             }
-
             localStorage.setItem('favorites', JSON.stringify(favorites));
         }
 
+        /**
+         * Exibe as estações favoritas do usuário.
+         */
+        async function displayFavorites() {
+            radioGrid.innerHTML = ''; // Limpa a grid
+            showLoading(true);
+            pagination.style.display = 'none'; // Esconde a paginação
 
+            if (favorites.length === 0) {
+                showNoResultsMessage('Nenhuma estação favorita. Adicione estações aos favoritos clicando no ícone de coração.');
+                showLoading(false);
+                return;
+            }
+
+            // Busca os detalhes completos das estações favoritas usando seus UUIDs
+            try {
+                // A API suporta múltiplos UUIDs separados por vírgula
+                const favoriteStationsData = await fetchData('/stations/byuuid', { uuids: favorites.join(',') });
+                stations = favoriteStationsData; // Atualiza a lista global de estações para navegação do player
+                currentStationIndex = -1; // Resetar o índice
+                displayStations(stations);
+            } catch (error) {
+                showNoResultsMessage('Erro ao carregar estações favoritas. Por favor, tente novamente mais tarde.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // --- LÓGICA DO PLAYER DE ÁUDIO ---
+
+        /**
+         * Reproduz uma estação de rádio.
+         * @param {object} stationData - Objeto contendo url, name, info e uuid da estação.
+         */
+        function playStation(stationData) {
+            const { url, name, info, uuid } = stationData;
+
+            // Encontra o índice da estação na lista atual de estações
+            // Usamos findIndex para garantir que o currentStationIndex está sempre atualizado com a lista 'stations'
+            let foundIndex = stations.findIndex(s => s.stationuuid === uuid);
+            if (foundIndex === -1) {
+                // Se a estação não estiver na lista atual (ex: pesquisa nova ou favoritos), adicione-a temporariamente
+                // Isso pode acontecer se o usuário clicar em uma estação que não está na `stations` carregada
+                console.warn('Estação clicada não está na lista atual de estações carregadas. Adicionando temporariamente.');
+                stations.push(stationData);
+                currentStationIndex = stations.length - 1;
+            } else {
+                currentStationIndex = foundIndex;
+            }
+
+
+            audioPlayer.src = url;
+            audioPlayer.volume = parseFloat(volumeControl.value); // Garante que seja um número
+
+            // Remover destaque da estação anterior
+            if (currentPlayingCard) {
+                currentPlayingCard.classList.remove('playing');
+            }
+
+            // Adicionar destaque à estação atual
+            // Usamos `data-uuid` para encontrar o card, que é adicionado em `createStationCard`
+            const newPlayingCard = document.querySelector(`.radio-card[data-uuid="${uuid}"]`);
+            if (newPlayingCard) {
+                newPlayingCard.classList.add('playing');
+                currentPlayingCard = newPlayingCard;
+            } else {
+                currentPlayingCard = null; // Reset se a card não estiver na DOM
+            }
+
+            audioPlayer.play()
+                .then(() => {
+                    currentStation.textContent = name;
+                    currentInfo.textContent = info;
+                    player.classList.add('active');
+                    playPauseButton.classList.add('playing'); // Mudar para ícone de pausa
+                    trackStationClick(uuid); // Registra o clique
+                })
+                .catch(error => {
+                    displayPlaybackError(`Não foi possível reproduzir "${name}". A estação pode estar offline ou o formato não é suportado. Detalhes: ${error.message}`);
+                    console.error('Erro ao tentar reproduzir a estação:', error);
+                    // Opcional: Tentar a próxima estação automaticamente após erro
+                    // playNextStation();
+                });
+        }
+
+        /**
+         * Tenta reproduzir a próxima estação na lista.
+         */
+        async function playNextStation() {
+            // Se estivermos na última estação da lista atual
+            if (stations && currentStationIndex >= 0 && currentStationIndex < stations.length - 1) {
+                currentStationIndex++;
+                const nextStation = stations[currentStationIndex];
+                playStation({
+                    url: nextStation.url_resolved || nextStation.url,
+                    name: nextStation.name,
+                    info: `${nextStation.country || 'Desconhecido'} - ${nextStation.tags?.split(',')[0]?.trim() || 'Sem gênero'}`,
+                    uuid: nextStation.stationuuid
+                });
+            } else {
+                // Se chegou ao fim da lista da página atual, tentar carregar a próxima página
+                const totalPages = Math.ceil(totalStations / ITEMS_PER_PAGE);
+                if (!showingFavorites && currentPage < totalPages) {
+                    currentPage++;
+                    updateFilters(); // Atualiza os filtros para a próxima página
+                    showLoading(true); // Mostrar carregamento enquanto busca a próxima página
+                    await searchStations(); // Carrega as novas estações
+
+                    // Certifique-se de que `stations` foi preenchido por `searchStations`
+                    if (stations && stations.length > 0) {
+                        currentStationIndex = 0; // Começa da primeira estação da nova página
+                        const nextStation = stations[currentStationIndex];
+                        playStation({
+                            url: nextStation.url_resolved || nextStation.url,
+                            name: nextStation.name,
+                            info: `${nextStation.country || 'Desconhecido'} - ${nextStation.tags?.split(',')[0]?.trim() || 'Sem gênero'}`,
+                            uuid: nextStation.stationuuid
+                        });
+                    } else {
+                        displayPlaybackError('Não há mais estações disponíveis para reprodução nas próximas páginas.');
+                        stopButton.click();
+                    }
+                } else {
+                    // Chegou ao fim de todas as estações disponíveis ou dos favoritos
+                    displayPlaybackError('Você chegou ao final da lista de estações.');
+                    stopButton.click();
+                }
+            }
+        }
+
+        // --- LÓGICA DE PAGINAÇÃO ---
+
+        /**
+         * Atualiza os botões da paginação com base na página atual e total de estações.
+         */
         function updatePagination() {
-            const totalPages = Math.ceil(totalStations / itemsPerPage);
             pagination.innerHTML = '';
+            const totalPages = Math.ceil(totalStations / ITEMS_PER_PAGE);
 
-            if (totalPages <= 1) return;
+            if (totalPages <= 1) {
+                pagination.style.display = 'none'; // Esconde se não houver paginação
+                return;
+            }
+
+            pagination.style.display = 'flex'; // Garante que esteja visível
 
             const prevBtn = createPaginationButton('« Anterior', () => {
                 if (currentPage > 1) {
                     currentPage--;
                     updateFilters();
                     searchStations();
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola para o topo
                 }
-            });
+            }, 'Página anterior');
             prevBtn.disabled = currentPage === 1;
-
-            const nextBtn = createPaginationButton('Próximo »', () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updateFilters();
-                    searchStations();
-                }
-            });
-            nextBtn.disabled = currentPage === totalPages;
-
             pagination.appendChild(prevBtn);
 
             const startPage = Math.max(1, currentPage - 2);
-            const endPage = Math.min(totalPages, startPage + 4);
+            const endPage = Math.min(totalPages, startPage + 4); // Mostra no máximo 5 botões de página
 
             for (let i = startPage; i <= endPage; i++) {
                 const pageBtn = createPaginationButton(i, () => {
                     currentPage = i;
                     updateFilters();
                     searchStations();
-                });
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola para o topo
+                }, `Página ${i}`);
                 pageBtn.classList.toggle('active', i === currentPage);
                 pagination.appendChild(pageBtn);
             }
 
+            const nextBtn = createPaginationButton('Próximo »', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateFilters();
+                    searchStations();
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola para o topo
+                }
+            }, 'Próxima página');
+            nextBtn.disabled = currentPage === totalPages;
             pagination.appendChild(nextBtn);
         }
 
-
-        function createPaginationButton(text, onClick) {
+        /**
+         * Cria um botão de paginação.
+         * @param {string|number} text - O texto ou número do botão.
+         * @param {Function} onClick - A função a ser executada ao clicar.
+         * @param {string} ariaLabel - O rótulo de acessibilidade do botão.
+         * @returns {HTMLButtonElement} O botão criado.
+         */
+        function createPaginationButton(text, onClick, ariaLabel) {
             const button = document.createElement('button');
             button.textContent = text;
             button.addEventListener('click', onClick);
+            button.setAttribute('aria-label', ariaLabel);
             return button;
         }
 
+        // --- LISTENERS DE EVENTOS ---
 
-        function updateFilters() {
-            const tags = tagFilter.selectedOptions.length > 0 ? Array.from(tagFilter.selectedOptions).map(option => option.value).join(',') : '';
-
-            filters.name = searchInput.value;
-            filters.country = countryFilter.value;
-            filters.language = languageFilter.value;
-            filters.tagList = tags; // Atualiza tagList com as tags selecionadas
-            filters.order = sortOptions.value;
-            filters.reverse = sortOptions.value === 'votes' || sortOptions.value === 'clicks' || sortOptions.value === 'bitrate';
-            filters.offset = (currentPage - 1) * itemsPerPage;
-            filters.limit = itemsPerPage;
-            filters.hidebroken = true;
-        }
-
-
-        function showLoading(show) {
-            loading.style.display = show ? 'flex' : 'none';
-        }
-
+        // Pesquisa (debounce para input, click para button)
+        // Usamos debounce para o input do usuário para evitar muitas requisições
+        searchInput.addEventListener('input', debounce(() => {
+            if (!showingFavorites) {
+                currentPage = 1; // Sempre volta para a primeira página ao pesquisar
+                updateFilters();
+                searchStations();
+            }
+        }, DEBOUNCE_DELAY));
 
         searchButton.addEventListener('click', () => {
             currentPage = 1;
+            showingFavorites = false; // Garante que não está mostrando favoritos
+            favoritesButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Favoritos`;
+            pagination.style.display = 'flex'; // Garante que a paginação apareça
             updateFilters();
             searchStations();
         });
 
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                currentPage = 1;
-                updateFilters();
-                searchStations();
-            }
-        });
-
-
+        // Alternar Favoritos
         favoritesButton.addEventListener('click', () => {
             showingFavorites = !showingFavorites;
-            favoritesButton.textContent = showingFavorites ? 'Todas as Estações' : 'Favoritos';
-            currentPage = 1; // Reset currentPage - This is correct as per instructions.
-
             if (showingFavorites) {
+                favoritesButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-radio"><circle cx="12" cy="12" r="2"/><path d="M4.93 19.07A10 10 0 0 1 12 22v-2A8 8 0 0 0 6.34 17.66"/><path d="M19.07 4.93A10 10 0 0 1 12 2v2A8 8 0 0 0 17.66 6.34"/><path d="M4.93 4.93A16 16 0 0 1 12 2v2A14 14 0 0 0 6.34 6.34"/><path d="M19.07 19.07A16 16 0 0 0 12 22v-2A14 14 0 0 1 17.66 17.66"/></svg> Todas as Estações`;
                 displayFavorites();
-                pagination.style.display = 'none'; // Correctly hides pagination for favorites.
             } else {
-                updateFilters(); 
+                favoritesButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> Favoritos`;
+                currentPage = 1; // Reseta a página ao voltar para "Todas as Estações"
+                updateFilters();
                 searchStations();
-                pagination.style.display = 'flex'; // Correctly shows pagination for all stations.
+                pagination.style.display = 'flex'; // Garante que a paginação apareça
             }
         });
 
+        // Limpar Filtros
+        clearFiltersButton.addEventListener('click', clearAllFilters);
 
+        // Filtros (País, Idioma, Gênero, Ordem)
         [countryFilter, languageFilter, tagFilter, sortOptions].forEach(filter => {
             filter.addEventListener('change', () => {
                 if (!showingFavorites) {
@@ -1065,105 +1529,92 @@ select {
             });
         });
 
+        // Controles do Player
+        playPauseButton.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                if (audioPlayer.src) { // Só tenta tocar se houver uma URL
+                    audioPlayer.play();
+                    playPauseButton.classList.add('playing');
+                } else if (stations && stations.length > 0) {
+                    // Se não houver nada tocando, mas tiver estações na lista, toca a primeira
+                    // Ou a última estação clicada, se `currentStationIndex` for válido
+                    const stationToPlay = stations[currentStationIndex !== -1 ? currentStationIndex : 0];
+                    if (stationToPlay) {
+                        playStation({
+                            url: stationToPlay.url_resolved || stationToPlay.url,
+                            name: stationToPlay.name,
+                            info: `${stationToPlay.country || 'Desconhecido'} - ${stationToPlay.tags?.split(',')[0]?.trim() || 'Sem gênero'}`,
+                            uuid: stationToPlay.stationuuid
+                        });
+                    }
+                } else {
+                    displayError('Nenhuma estação selecionada para reprodução. Pesquise e clique em uma estação.');
+                }
+            } else {
+                audioPlayer.pause();
+                playPauseButton.classList.remove('playing');
+            }
+        });
 
         stopButton.addEventListener('click', () => {
             audioPlayer.pause();
-            audioPlayer.src = '';
+            audioPlayer.src = ''; // Limpa a fonte do áudio
             player.classList.remove('active');
-            playPauseButton.textContent = '▶️'; //Resetar o botão play/pause
-            playerErrorMessage.style.display = 'none'; // Hide error on stop
-            tryNextStationButton.style.display = 'none'; // Hide button on stop
-        });
+            playPauseButton.classList.remove('playing'); // Mudar para ícone de play
+            currentStation.textContent = 'Nenhuma estação tocando';
+            currentInfo.textContent = 'Aguardando seleção...';
 
+            if (currentPlayingCard) {
+                currentPlayingCard.classList.remove('playing');
+                currentPlayingCard = null;
+            }
+            currentStationIndex = -1; // Reseta o índice
+        });
 
         volumeControl.addEventListener('input', () => {
-            audioPlayer.volume = volumeControl.value;
-            localStorage.setItem('radioPlayerVolume', volumeControl.value);
+            audioPlayer.volume = parseFloat(volumeControl.value);
+            localStorage.setItem('playerVolume', volumeControl.value);
+            updateVolumeIcon(audioPlayer.volume);
         });
 
-        // Old audioPlayer.onerror that called handleError will be removed.
-        // The new one will be defined below.
+        // Evento de erro do player de áudio
+        audioPlayer.onerror = (e) => {
+            console.error('Erro de áudio:', e);
+            displayPlaybackError('A reprodução falhou. A estação pode estar offline ou o formato não é suportado.');
+            // Opcional: tentar a próxima estação automaticamente
+            // playNextStation();
+        };
 
-    // New audioPlayer event handlers
-    audioPlayer.onplaying = () => {
-        playerErrorMessage.style.display = 'none';
-        tryNextStationButton.style.display = 'none';
-        playPauseButton.textContent = '⏸️'; // Playback is active
-    };
+        // Evento quando a estação atual termina (para avançar para a próxima)
+        audioPlayer.onended = playNextStation;
 
-    audioPlayer.onerror = () => {
-        const stationName = currentStation.textContent || "A estação atual";
-        playerErrorMessage.textContent = `Erro ao reproduzir "${stationName}". Tente a próxima.`;
-        playerErrorMessage.style.display = 'block';
-        tryNextStationButton.style.display = 'block';
-        playPauseButton.textContent = '▶️'; // Indicate that it's not playing
-        // Do not call playNextStation() automatically here.
-    };
 
-    // Event listener for the new button
-    tryNextStationButton.addEventListener('click', () => {
-        playerErrorMessage.style.display = 'none';
-        tryNextStationButton.style.display = 'none';
-        playNextStation();
-    });
-
+        // --- INICIALIZAÇÃO DA APLICAÇÃO ---
         window.addEventListener('load', () => {
-            const savedVolume = localStorage.getItem('radioPlayerVolume');
-            if (savedVolume !== null) {
-                volumeControl.value = savedVolume;
-                if (audioPlayer) { // audioPlayer is available globally
-                    audioPlayer.volume = savedVolume;
-                }
-            } else {
-                // Optional: Save the default volume if nothing is stored
-                // The default value of volumeControl (0.7) is already set in HTML.
-                // We just need to ensure audioPlayer also has it and store it.
-                if (audioPlayer) {
-                     audioPlayer.volume = volumeControl.value; // Apply default to audio player
-                }
-                localStorage.setItem('radioPlayerVolume', volumeControl.value);
-            }
-
+            // Carregar filtros e dados iniciais
             loadFilters();
-            updateFilters();
-            searchStations();
+            updateFilters(); // Aplica filtros iniciais
+            searchStations(); // Realiza a primeira pesquisa
+
+            // Inicializa o volume do player
+            const savedVolume = localStorage.getItem('playerVolume');
+            if (savedVolume !== null) {
+                volumeControl.value = parseFloat(savedVolume);
+            }
+            audioPlayer.volume = parseFloat(volumeControl.value);
+            updateVolumeIcon(audioPlayer.volume);
         });
 
-
-        async function playNextStation() {
-            if (stations && stations.length > currentStationIndex + 1) {
-                currentStationIndex++;
-                const nextStation = stations[currentStationIndex];
-                // Ensure stationuuid is passed to playStation
-                playStation(nextStation.url_resolved || nextStation.url, nextStation.name, `${nextStation.country} - ${nextStation.tags?.split(',')[0] || 'Sem gênero'}`, nextStation.stationuuid);
-            } else {
-                const totalPages = Math.ceil(totalStations / itemsPerPage);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updateFilters();
-                    await searchStations(); 
-                    if (stations && stations.length > 0 && stations[0]) {
-                        // Ensure stationuuid is passed to playStation
-                        playStation(stations[0].url_resolved || stations[0].url, stations[0].name, `${stations[0].country} - ${stations[0].tags?.split(',')[0] || 'Sem gênero'}`, stations[0].stationuuid);
-                    } else {
-                        // This case might happen if the next page has no playable stations or API returns empty
-                        playerErrorMessage.textContent = 'Fim de todas as estações ou nenhuma encontrada na próxima página.';
-                        playerErrorMessage.style.display = 'block';
-                        tryNextStationButton.style.display = 'none'; // No next station to try from here
-                        player.classList.remove('active');
-                        playPauseButton.textContent = '▶️';
-                        currentStationIndex = 0; 
-                    }
-                } else {
-                    playerErrorMessage.textContent = 'Fim de todas as estações.';
-                    playerErrorMessage.style.display = 'block';
-                    tryNextStationButton.style.display = 'none'; // No next station to try
-                    player.classList.remove('active');
-                    playPauseButton.textContent = '▶️';
-                    currentStationIndex = 0;
-                }
+        // Opcional: Função para converter ícones Lucide automaticamente
+        // Garante que os ícones SVG sejam processados se adicionados dinamicamente
+        function replaceLucideIcons() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
             }
         }
+        // Chame isso após adicionar elementos dinamicamente, se necessário.
+        // Por exemplo, após displayStations(stations);
+        // Não é necessário para SVGs incluídos diretamente no HTML, apenas se criados por JS.
     </script>
 </body>
 </html>
