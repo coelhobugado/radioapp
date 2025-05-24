@@ -1,0 +1,819 @@
+:root {
+            --primary-color: #7c3aed; /* Violet 600 (Roxo/Lilás) */
+            --primary-hover: #9f5afd; /* Violet 500 (Tom mais claro) */
+            --primary-light: #3730a3; /* Indigo 700 (para tags, etc.) */
+            --secondary-color: #e5e7eb; /* Gray 200 */
+            --accent-color: #ec4899; /* Pink 500 */
+            --text-color: #f3f4f6;    /* Gray 100 (Branco/Cinza claro) */
+            --text-light: #9ca3af;   /* Gray 400 (Cinza suave) */
+            --light-bg: #1f2937;     /* Gray 800 (Cinza escuro mais claro) */
+            --card-bg: #374151;      /* Gray 700 (Cinza um pouco mais claro que light-bg) */
+            --border-color: #4b5563; /* Gray 600 */
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-md: 0 2px 4px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 16px -4px rgba(0,0,0,0.2);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 10px;
+            --radius-full: 9999px;
+            --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        header {
+            background-color: var(--primary-light); /* Usando uma cor base do novo tema */
+            background-image: linear-gradient(135deg, var(--primary-light), var(--primary-color)); /* Gradiente com novas cores */
+            color: white;
+            padding: 1.25rem 2rem;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background-color: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        input, select, button {
+            padding: 0.75rem 1rem; /* Ajustado o padding */
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            transition: all var(--transition);
+            outline: none; 
+        }
+
+        /* Foco customizado para acessibilidade */
+        input:focus, select:focus, button:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--light-bg), 0 0 0 4px var(--primary-color); /* Novo estilo de foco */
+            outline: none; 
+        }
+
+        input {
+            flex: 1;
+            min-width: 200px;
+            box-shadow: var(--shadow-sm);
+            background-color: var(--light-bg); /* Ajustado para usar variável */
+            color: var(--text-color);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none; 
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* var(--transition) substituído por tempos e easing específicos */
+            white-space: nowrap;
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        /* Specific hover for filter buttons in search container */
+        .search-container > div button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            background-color: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        select {
+            width: 100%;
+            background-color: var(--light-bg); /* Ajustado para usar variável */
+            color: var(--text-color);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); /* Cor do ícone ajustada para --text-light */
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.25rem;
+            padding-right: 2.5rem;
+        }
+
+        /* Estilo para multi-seleção de tags */
+        select[multiple] {
+            padding-right: 1.25rem; /* Remove a seta padrão */
+            min-height: 100px; /* Altura mínima para mostrar mais opções */
+            resize: vertical; /* Permite redimensionar verticalmente */
+        }
+
+        select[multiple] option {
+            padding: 0.5rem 0.75rem;
+        }
+        select[multiple] option:checked {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .radio-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            /* Estilo inicial para animação de entrada */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.25s ease-in-out, border-color 0.25s ease-in-out; /* var(--transition) substituído por ease-in-out e tempo específico */
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .radio-card.card-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .radio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Destaque para a estação atualmente tocando */
+        .radio-card.playing {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.4); /* Anel de destaque com nova cor primária */
+            transform: translateY(-3px); 
+        }
+
+        .radio-image {
+            height: 180px;
+            background-color: var(--light-bg); /* Ajustado para usar variável */
+            background-image: linear-gradient(45deg, var(--light-bg), var(--card-bg)); /* Ajustado para usar variáveis */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .radio-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition);
+            border-radius: var(--radius-sm); /* Adicionado border-radius */
+        }
+
+        .radio-card:hover .radio-image img {
+            transform: scale(1.05);
+        }
+
+        .radio-info {
+            padding: 1rem; /* Ajustado padding */
+            position: relative; 
+        }
+
+        .radio-name {
+            font-size: 1.25rem;
+            font-weight: 600; /* Ajustado font-weight */
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-color); /* Ajustado para usar --text-color */
+        }
+
+        .radio-details {
+            font-size: 0.9rem;
+            font-weight: 400; /* Ajustado font-weight */
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        .radio-details span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .tag {
+            background-color: var(--primary-light);
+            color: var(--secondary-color); /* Ajustado para usar --secondary-color */
+            padding: 0.25rem 0.625rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Botão de play na card */
+        .play-button {
+            position: absolute;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Transição suavizada */
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none; 
+        }
+
+        .radio-card:hover .play-button {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .play-button:hover {
+            background-color: var(--primary-hover);
+            transform: scale(1.1);
+        }
+
+        .play-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            stroke: white;
+        }
+
+        /* Botão de favorito na card */
+        .favorite {
+            position: absolute;
+            top: 1.25rem; /* Posição dentro da radio-info */
+            right: 1.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: color var(--transition), transform var(--transition);
+        }
+
+        .favorite:hover {
+            transform: scale(1.2);
+            color: var(--accent-color); /* Hover para coração vazio */
+        }
+
+        .favorite.active {
+            color: var(--accent-color); /* Cor para coração preenchido */
+        }
+
+        .favorite svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor; /* Preenche com a cor do botão */
+            stroke: currentColor; /* Contorna com a cor do botão */
+        }
+
+        .favorite .icon-heart-empty { display: inline-block; }
+        .favorite .icon-heart-filled { display: none; }
+        .favorite.active .icon-heart-empty { display: none; }
+        .favorite.active .icon-heart-filled { display: inline-block; }
+
+
+        .player-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--light-bg); 
+            color: var(--text-color); 
+            padding: 1.25rem 1.75rem; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Verified: This is the requested overshoot curve */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); 
+        }
+
+        .player-container.active {
+            transform: translateY(0);
+        }
+
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-shrink: 0; /* Evita que encolha muito */
+            min-width: 150px;
+        }
+
+        .station-logo {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .station-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .station-logo svg {
+            width: 32px; /* Tamanho do ícone dentro do logo */
+            height: 32px;
+            color: white;
+        }
+
+        .station-info {
+            flex: 1;
+            min-width: 0; /* Permite que o texto encurte */
+        }
+
+        .station-info h3 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-color); /* Garante a cor do texto principal */
+        }
+
+        .station-info p {
+            color: var(--text-light); /* Ajustado para usar variável */
+            font-size: 0.875rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-grow: 1; 
+            justify-content: center; 
+        }
+
+        .control-button {
+            background-color: transparent; /* Fundo transparente */
+            color: var(--text-color); /* Cor do ícone */
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            padding: 0;
+        }
+
+        .control-button:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Leve fundo no hover */
+            transform: scale(1.1);
+        }
+
+        .control-button svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor; /* Ícone usa a cor do texto do botão */
+            stroke: currentColor;
+        }
+
+        .control-button.play-pause {
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary-color); /* Mantém fundo destacado com nova cor primária */
+            color: white; /* Garante que o ícone seja branco */
+        }
+
+        .control-button.play-pause:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Controle de play/pause com SVGs */
+        .play-pause .icon-play { display: inline-block; }
+        .play-pause .icon-pause { display: none; }
+        .play-pause.playing .icon-play { display: none; }
+        .play-pause.playing .icon-pause { display: inline-block; }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            /* background-color: rgba(255, 255, 255, 0.1); Removido fundo, se desejado */
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            flex-shrink: 0; 
+        }
+
+        .volume-control svg {
+            width: 20px; 
+            height: 20px;
+            fill: currentColor; /* Ícone usa a cor do texto do elemento pai */
+            stroke: currentColor;
+        }
+
+        .volume-slider {
+            width: 100px;
+            appearance: none;
+            height: 4px;
+            border-radius: var(--radius-full);
+            background-color: rgba(255, 255, 255, 0.2); /* Mantido para contraste do slider */
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--text-color); /* Thumb com cor do texto */
+            cursor: pointer;
+        }
+
+        /* Mensagens de estado */
+        .loading, .no-results {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out; /* Verified: Duração ajustada e timing function */
+            pointer-events: none; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 300px; /* Altura padrão para ocupar espaço */
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .loading.active, .no-results.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(124, 58, 237, 0.1); /* Cor do spinner com nova primária */
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .no-results svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            opacity: 0.5;
+        }
+
+        .no-results h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Notificação de erro (toast) */
+        .error-toast {
+            position: fixed;
+            bottom: 120px; /* Acima do player */
+            left: 50%;
+            transform: translateX(-50%) translateY(20px); /* Inicialmente um pouco para baixo e transparente */
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .error-toast.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .error-toast svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            stroke: white;
+        }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2.5rem;
+            gap: 0.5rem;
+            flex-wrap: wrap; /* Para quebrar a linha em telas pequenas */
+        }
+
+        .pagination button {
+            padding: 0.625rem 1rem;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out; /* var(--transition) substituído por tempos e easing específicos */
+        }
+
+        .pagination button:not(:disabled):not(.active):hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .pagination button.active {
+            background-color: var(--primary-color); 
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination button:disabled {
+            background-color: var(--card-bg); 
+            color: var(--text-light); 
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .search-container, .filter-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            .search-box {
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .search-box input, .search-box button {
+                width: 100%;
+            }
+            .search-container > div:last-child {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .radio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Ajustado para 260px */
+            }
+
+            .search-box input, .search-box button, .filter-group select, .filter-group button { /* Garantir 100% e adicionar margem */
+                width: 100%;
+                margin-bottom: 0.75rem;
+            }
+            .search-box button:last-child, .filter-group button:last-child, .filter-group select:last-child {
+                margin-bottom: 0;
+            }
+
+
+            .player-container {
+                flex-direction: column;
+                gap: 0.75rem; /* Reduzido o gap para telas menores */
+                padding: 1rem;
+                align-items: flex-start;
+            }
+
+            .now-playing {
+                width: 100%;
+                justify-content: center;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+
+            .station-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .player-controls {
+                width: 100%;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .volume-control {
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+                padding: 0.5rem;
+            }
+            .volume-slider {
+                flex: 1; 
+                max-width: 200px; /* Adicionado max-width para o slider de volume */
+            }
+            .station-info h3, .station-info p { /* Garantir text-overflow */
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .error-toast {
+                width: calc(100% - 2rem);
+                bottom: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header .container h1 {
+                font-size: 1.5rem; /* Reduz o tamanho do H1 */
+            }
+            .container {
+                padding: 1rem; /* Reduz padding geral do container */
+            }
+            .radio-grid {
+                grid-template-columns: 1fr; /* Cards em coluna única */
+                gap: 1rem; /* Ajusta o gap para coluna única */
+            }
+            .radio-image {
+                height: 160px; /* Reduz altura da imagem do card */
+            }
+            .radio-name {
+                font-size: 1.1rem; /* Reduz nome da rádio no card */
+            }
+            .radio-details {
+                font-size: 0.8rem; /* Reduz detalhes no card */
+            }
+            .play-button {
+                width: 40px; /* Reduz botão de play no card */
+                height: 40px;
+                bottom: 0.75rem;
+                right: 0.75rem;
+            }
+            .play-button svg {
+                width: 20px;
+                height: 20px;
+            }
+            .player-container {
+                padding: 0.75rem; /* Padding ainda menor no player */
+            }
+            .station-logo {
+                width: 40px; /* Logo menor no player */
+                height: 40px;
+            }
+            .station-logo svg {
+                width: 20px;
+                height: 20px;
+            }
+            .station-info h3 {
+                font-size: 1rem; /* Nome da estação menor no player */
+            }
+            .station-info p {
+                font-size: 0.75rem; /* Info da estação menor no player */
+            }
+            .control-button {
+                width: 36px; /* Botões de controle menores */
+                height: 36px;
+            }
+            .control-button svg {
+                width: 20px;
+                height: 20px;
+            }
+            .control-button.play-pause {
+                width: 44px; /* Botão play/pause um pouco maior */
+                height: 44px;
+            }
+            .volume-control {
+                padding: 0.3rem 0.6rem; /* Padding menor no controle de volume */
+                gap: 0.5rem;
+            }
+            .volume-control svg {
+                width: 18px;
+                height: 18px;
+            }
+            .pagination button {
+                padding: 0.5rem 0.75rem; /* Botões de paginação menores */
+                font-size: 0.875rem;
+            }
+            .error-toast {
+                bottom: 80px; /* Ajusta posição do toast */
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+            .error-toast svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
