@@ -407,16 +407,31 @@ select {
 }
 
 .spinner {
-    width: 48px;
-    height: 48px;
-    border: 3px solid rgba(79, 70, 229, 0.1);
+    width: 60px; /* Aumentar tamanho */
+    height: 60px; /* Aumentar tamanho */
     border-radius: 50%;
-    border-top-color: var(--primary-color);
-    animation: spin 1s ease-in-out infinite;
+    background-color: var(--primary-color); /* Cor primária como fundo */
+    animation: pulse 1.5s ease-in-out infinite; /* Nova animação */
+    /* border e border-top-color removidos */
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+@keyframes pulse { /* Nova animação */
+    0% {
+        transform: scale(0.8);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.7;
+    }
 }
 
 .loading p {
@@ -521,6 +536,7 @@ select {
     </header>
 
     <main class="container">
+        <div id="general-error-message" style="display: none; padding: 1rem; margin-bottom: 1rem; background-color: var(--accent-color); color: white; border-radius: var(--radius-md); text-align: center;"></div>
         <div class="search-container">
             <div class="search-box">
                 <input type="text" id="search-input" placeholder="Pesquisar estações...">
@@ -563,7 +579,7 @@ select {
 
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <p>Carregando...</p>
+            <p>Buscando estações, por favor aguarde...</p>
         </div>
 
         <div id="radio-grid" class="radio-grid"></div>
@@ -611,6 +627,8 @@ select {
         const stopButton = document.getElementById('stop-button');
         const volumeControl = document.getElementById('volume');
         const playPauseButton = document.getElementById('play-pause-button');
+        const playerErrorMessage = document.getElementById('player-error-message');
+        const tryNextStationButton = document.getElementById('try-next-station-button');
 
 
         let currentPage = 1;
@@ -657,28 +675,33 @@ select {
 
                 return await response.json();
             } catch (error) {
-                console.error('Erro ao buscar dados:', error);
-                handleError(error); //Função para exibir mensagem de erro
+                // console.error('Erro ao buscar dados:', error); // Removido pois handleError fará o log.
+                handleError(error); 
                 return [];
             }
         }
 
         function handleError(error) {
-    console.error(error);
-    // Only show alert for non-playback errors
-    if (!error.message.includes('play')) {
-        alert(`Error: ${error.message}`);
-    }
-}
+            console.error('Erro detectado:', error); // Mantém o log no console
 
-audioPlayer.onerror = (e) => {
-    const playNext = confirm(`This station is not working. Would you like to try the next station?`);
-    if (playNext) {
-        playNextStation();
-    } else {
-        stopButton.click(); // Stop playback if user doesn't want to continue
-    }
-};
+            const generalErrorMessage = document.getElementById('general-error-message');
+
+            if (generalErrorMessage) {
+                // Limitar o tamanho da mensagem para não quebrar o layout
+                const displayMessage = error.message.length > 150 ? error.message.substring(0, 147) + "..." : error.message;
+                generalErrorMessage.textContent = `Erro: ${displayMessage}`;
+                generalErrorMessage.style.display = 'block';
+
+                // Opcional: ocultar a mensagem após alguns segundos
+                setTimeout(() => {
+                    generalErrorMessage.style.display = 'none';
+                }, 7000); // Oculta após 7 segundos
+            } else {
+                // Fallback se o elemento não existir (embora não devesse acontecer)
+                // Este alert só será usado se o #general-error-message não for encontrado.
+                alert(`Erro: ${error.message}`);
+            }
+        }
 
         async function loadFilters() {
             try {
@@ -724,29 +747,42 @@ audioPlayer.onerror = (e) => {
             }
 
             try {
-                const countResponse = await fetchData('/stations/search', { ...filters, limit: 100000 });
-                totalStations = countResponse.length;
+                // Create countFilters from the global filters object
+                const countFilters = {
+                    name: filters.name,
+                    country: filters.country,
+                    language: filters.language,
+                    tagList: filters.tagList,
+                    hidebroken: filters.hidebroken !== undefined ? filters.hidebroken : true
+                };
+                const countResponse = await fetchData('/stations/search/count', countFilters);
+                totalStations = parseInt(countResponse.value, 10);
                 const stationsData = await fetchData('/stations/search', filters);
-                stations = stationsData;
-                currentStationIndex = 0;
+                stations = stationsData; // This populates the global 'stations' array
+                // currentStationIndex = 0; // This is already here from a previous change, as expected by the task.
 
                 if (stations.length === 0) {
-                    showNoResultsMessage('Nenhuma estação encontrada. Tente ajustar seus filtros de pesquisa.');
+                    showNoResultsMessage('Nenhuma estação encontrada', 'Tente palavras-chave diferentes ou ajuste os filtros de país, idioma ou gênero.');
                 } else {
                     displayStations(stations);
                     updatePagination();
                 }
             } catch (error) {
-                showNoResultsMessage('Erro ao buscar estações. Por favor, tente novamente mais tarde.');
+                showNoResultsMessage('Erro ao buscar estações', 'Houve um problema ao carregar as estações. Por favor, tente novamente mais tarde ou recarregue a página.');
             } finally {
                 showLoading(false);
             }
         }
 
-        function showNoResultsMessage(message) {
+        function showNoResultsMessage(title, suggestion) {
             radioGrid.innerHTML = `
                 <div class="no-results">
-                    <h3>${message}</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search" style="color: var(--text-light); margin-bottom: 1rem; opacity: 0.7;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <h3>${title}</h3>
+                    <p style="color: var(--text-light);">${suggestion}</p>
                 </div>
             `;
         }
@@ -766,7 +802,7 @@ audioPlayer.onerror = (e) => {
             showLoading(true);
 
             if (favorites.length === 0) {
-                showNoResultsMessage('Nenhuma estação favorita. Adicione estações aos favoritos clicando no ícone de coração.');
+                showNoResultsMessage('Você ainda não tem estações favoritas', 'Clique no ícone de coração ❤️ em uma estação para adicioná-la aqui!');
                 showLoading(false);
                 return;
             }
@@ -776,11 +812,15 @@ audioPlayer.onerror = (e) => {
 
 
         async function fetchFavoriteStations() {
+            currentStationIndex = 0; // Resetar o índice
+            stations = []; // Limpar o array de estações global
             try {
-                const stations = await fetchData('/stations/byuuid', { uuids: favorites.join(',') });
-                displayStations(stations);
+                const favoriteStationsData = await fetchData('/stations/byuuid', { uuids: favorites.join(',') });
+                stations = favoriteStationsData; // ATRIBUIR AO ARRAY GLOBAL 'stations'
+                displayStations(stations); 
             } catch (error) {
-                showNoResultsMessage('Erro ao buscar favoritos. Por favor, tente novamente mais tarde.');
+                showNoResultsMessage('Erro ao buscar seus favoritos', 'Houve um problema ao carregar suas estações favoritas. Por favor, tente recarregar a página.');
+                stations = []; // Limpar em caso de erro também
             } finally {
                 showLoading(false);
             }
@@ -799,7 +839,7 @@ audioPlayer.onerror = (e) => {
 
             card.innerHTML = `
                 <div class="radio-image">
-                    ${station.favicon ? `<img src="${station.favicon}" alt="${station.name}" onerror="this.onerror=null; this.src='/api/placeholder/300/150'; this.parentElement.innerHTML='📻';">` : '📻'}
+                    ${station.favicon ? `<img src="${station.favicon}" alt="${station.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/100/1e293b/e2e8f0?text=Radio';">` : '📻'}
                 </div>
                 <div class="radio-info">
                     <h3 class="radio-name">${station.name}</h3>
@@ -810,12 +850,12 @@ audioPlayer.onerror = (e) => {
                     </div>
                     <button class="${favoriteClass}" data-uuid="${station.stationuuid}">${favoriteIcon}</button>
                 </div>
-                <div class="play-button" data-url="${station.url_resolved || station.url}" data-name="${station.name}" data-info="${station.country} - ${station.tags?.split(',')[0] || 'Sem gênero'}">▶️</div>
+                <div class="play-button" data-url="${station.url_resolved || station.url}" data-name="${station.name}" data-info="${station.country} - ${station.tags?.split(',')[0] || 'Sem gênero'}" data-stationuuid="${station.stationuuid}">▶️</div>
             `;
 
             const playButton = card.querySelector('.play-button');
             playButton.addEventListener('click', () => {
-                playStation(playButton.dataset.url, playButton.dataset.name, playButton.dataset.info);
+                playStation(playButton.dataset.url, playButton.dataset.name, playButton.dataset.info, playButton.dataset.stationuuid);
             });
 
             const favoriteButton = card.querySelector('.favorite');
@@ -828,25 +868,34 @@ audioPlayer.onerror = (e) => {
         }
 
 
-        function playStation(url, name, info) {
+        function playStation(url, name, info, stationuuid) {
+    playerErrorMessage.style.display = 'none';
+    tryNextStationButton.style.display = 'none';
+
     audioPlayer.src = url;
     audioPlayer.volume = volumeControl.value;
-    audioPlayer.onended = playNextStation;
+    audioPlayer.onended = playNextStation; // For sequential play when a stream ends naturally
+
     audioPlayer.play()
         .then(() => {
             currentStation.textContent = name;
             currentInfo.textContent = info;
             player.classList.add('active');
-            playPauseButton.textContent = '⏸️';
-            trackStationClick(url);
+            playPauseButton.textContent = '⏸️'; // Playback started successfully
+            trackStationClick(stationuuid);
+            // Ensure error UI is hidden, might be redundant if onplaying fires reliably but good for safety
+            playerErrorMessage.style.display = 'none';
+            tryNextStationButton.style.display = 'none';
         })
         .catch(error => {
-            const playNext = confirm(`Error playing ${name}. Você gostaria de experimentar a próxima estação??`);
-            if (playNext) {
-                playNextStation();
-            } else {
-                stopButton.click(); // Pare a reprodução se o usuário não quiser continuar
-            }
+            // This catch handles initial loading/setup errors before playback attempts.
+            console.error(`Error attempting to play ${name} (${stationuuid}):`, error);
+            // Manually trigger the visual error handling as if audioPlayer.onerror fired.
+            const stationNameForError = name || "A estação";
+            playerErrorMessage.textContent = `Erro ao carregar "${stationNameForError}".`;
+            playerErrorMessage.style.display = 'block';
+            tryNextStationButton.style.display = 'block';
+            playPauseButton.textContent = '▶️'; // Set to play as it failed to start
         });
 }
 
@@ -860,21 +909,22 @@ audioPlayer.onerror = (e) => {
             }
         });
 
-        async function trackStationClick(url) {
-            try {
-                const station = await fetchData('/stations/byurl', { url });
-                if (station && station.length > 0) {
-                    await fetch(`${API_BASE_URL}/url/${station[0].stationuuid}`, {
-                        method: 'GET',
-                        headers: {
-                            'User-Agent': 'RadioOnlineWebApp/1.0'
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Erro ao registrar clique:', error);
-            }
+        async function trackStationClick(stationuuid) {
+        if (!stationuuid) {
+            console.error('stationuuid não fornecido para trackStationClick');
+            return;
         }
+        try {
+            await fetch(`${API_BASE_URL}/url/${stationuuid}`, {
+                method: 'GET', 
+                headers: {
+                    'User-Agent': 'RadioOnlineWebApp/1.1 (Tracking)'
+                }
+            });
+        } catch (error) {
+            console.error('Erro ao registrar clique:', error);
+        }
+    }
 
 
         function toggleFavorite(uuid, button) {
@@ -992,15 +1042,15 @@ audioPlayer.onerror = (e) => {
         favoritesButton.addEventListener('click', () => {
             showingFavorites = !showingFavorites;
             favoritesButton.textContent = showingFavorites ? 'Todas as Estações' : 'Favoritos';
-            currentPage = 1;
+            currentPage = 1; // Reset currentPage - This is correct as per instructions.
 
             if (showingFavorites) {
                 displayFavorites();
-                pagination.style.display = 'none';
+                pagination.style.display = 'none'; // Correctly hides pagination for favorites.
             } else {
-                updateFilters();
+                updateFilters(); 
                 searchStations();
-                pagination.style.display = 'flex';
+                pagination.style.display = 'flex'; // Correctly shows pagination for all stations.
             }
         });
 
@@ -1021,21 +1071,59 @@ audioPlayer.onerror = (e) => {
             audioPlayer.src = '';
             player.classList.remove('active');
             playPauseButton.textContent = '▶️'; //Resetar o botão play/pause
+            playerErrorMessage.style.display = 'none'; // Hide error on stop
+            tryNextStationButton.style.display = 'none'; // Hide button on stop
         });
 
 
         volumeControl.addEventListener('input', () => {
             audioPlayer.volume = volumeControl.value;
+            localStorage.setItem('radioPlayerVolume', volumeControl.value);
         });
 
+        // Old audioPlayer.onerror that called handleError will be removed.
+        // The new one will be defined below.
 
-        audioPlayer.onerror = () => {
-            handleError(new Error('Erro ao reproduzir a estação.'));
-            playNextStation();
-        };
+    // New audioPlayer event handlers
+    audioPlayer.onplaying = () => {
+        playerErrorMessage.style.display = 'none';
+        tryNextStationButton.style.display = 'none';
+        playPauseButton.textContent = '⏸️'; // Playback is active
+    };
 
+    audioPlayer.onerror = () => {
+        const stationName = currentStation.textContent || "A estação atual";
+        playerErrorMessage.textContent = `Erro ao reproduzir "${stationName}". Tente a próxima.`;
+        playerErrorMessage.style.display = 'block';
+        tryNextStationButton.style.display = 'block';
+        playPauseButton.textContent = '▶️'; // Indicate that it's not playing
+        // Do not call playNextStation() automatically here.
+    };
+
+    // Event listener for the new button
+    tryNextStationButton.addEventListener('click', () => {
+        playerErrorMessage.style.display = 'none';
+        tryNextStationButton.style.display = 'none';
+        playNextStation();
+    });
 
         window.addEventListener('load', () => {
+            const savedVolume = localStorage.getItem('radioPlayerVolume');
+            if (savedVolume !== null) {
+                volumeControl.value = savedVolume;
+                if (audioPlayer) { // audioPlayer is available globally
+                    audioPlayer.volume = savedVolume;
+                }
+            } else {
+                // Optional: Save the default volume if nothing is stored
+                // The default value of volumeControl (0.7) is already set in HTML.
+                // We just need to ensure audioPlayer also has it and store it.
+                if (audioPlayer) {
+                     audioPlayer.volume = volumeControl.value; // Apply default to audio player
+                }
+                localStorage.setItem('radioPlayerVolume', volumeControl.value);
+            }
+
             loadFilters();
             updateFilters();
             searchStations();
@@ -1046,12 +1134,34 @@ audioPlayer.onerror = (e) => {
             if (stations && stations.length > currentStationIndex + 1) {
                 currentStationIndex++;
                 const nextStation = stations[currentStationIndex];
-                playStation(nextStation.url_resolved || nextStation.url, nextStation.name, `${nextStation.country} - ${nextStation.tags?.split(',')[0] || 'Sem gênero'}`);
+                // Ensure stationuuid is passed to playStation
+                playStation(nextStation.url_resolved || nextStation.url, nextStation.name, `${nextStation.country} - ${nextStation.tags?.split(',')[0] || 'Sem gênero'}`, nextStation.stationuuid);
             } else {
-                alert('Acabaram as estações na lista.');
-                player.classList.remove('active');
-                playPauseButton.textContent = '▶️'; //Resetar o botão play/pause
-                currentStationIndex = 0;
+                const totalPages = Math.ceil(totalStations / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateFilters();
+                    await searchStations(); 
+                    if (stations && stations.length > 0 && stations[0]) {
+                        // Ensure stationuuid is passed to playStation
+                        playStation(stations[0].url_resolved || stations[0].url, stations[0].name, `${stations[0].country} - ${stations[0].tags?.split(',')[0] || 'Sem gênero'}`, stations[0].stationuuid);
+                    } else {
+                        // This case might happen if the next page has no playable stations or API returns empty
+                        playerErrorMessage.textContent = 'Fim de todas as estações ou nenhuma encontrada na próxima página.';
+                        playerErrorMessage.style.display = 'block';
+                        tryNextStationButton.style.display = 'none'; // No next station to try from here
+                        player.classList.remove('active');
+                        playPauseButton.textContent = '▶️';
+                        currentStationIndex = 0; 
+                    }
+                } else {
+                    playerErrorMessage.textContent = 'Fim de todas as estações.';
+                    playerErrorMessage.style.display = 'block';
+                    tryNextStationButton.style.display = 'none'; // No next station to try
+                    player.classList.remove('active');
+                    playPauseButton.textContent = '▶️';
+                    currentStationIndex = 0;
+                }
             }
         }
     </script>
